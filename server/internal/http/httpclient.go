@@ -2,6 +2,7 @@ package http
 
 import (
 	"Remote_XML_Parser/internal/services"
+	"bytes"
 	"github.com/google/uuid"
 	"io"
 	"net/http"
@@ -9,38 +10,43 @@ import (
 )
 
 // Download returns filepath where file was loaded
-func Download(remoteUrl string, prefixPath string, extension string) (string, error) {
+func Download(remoteUrl string, prefixPath string, extension string) ([]byte, error) {
+
+	var emptyResponse = []byte("")
 	fileNameId := uuid.New().String()
 	filePath := prefixPath + fileNameId + "." + extension
+
+	// create new .xml file
 	out, err := os.Create(filePath)
 	if err != nil {
-		return "", services.ServerUnavailable
+		return emptyResponse, services.ServerUnavailable
 	}
 	defer func() {
-		err := out.Close()
-		if err != nil {
-			err = services.ServerUnavailable
-		}
+		out.Close()
 	}()
-	if err != nil {
-		return "", err
-	}
+
+	// get remote .xml file
 	resp, err := http.Get(remoteUrl)
 	if err != nil {
-		return "", services.ServerUnavailable
+		return emptyResponse, services.ServerUnavailable
 	}
 	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			err = services.ServerUnavailable
-		}
+		Body.Close()
 	}(resp.Body)
+
+	// read remote .xml file content to memory
+	content, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return "", err
+		return emptyResponse, services.ServerUnavailable
 	}
-	_, err = io.Copy(out, resp.Body)
+
+	// write from memory to drive
+	_, err = io.Copy(out, bytes.NewBuffer(content))
 	if err != nil {
-		return "", services.ServerUnavailable
+		return emptyResponse, services.ServerUnavailable
 	}
-	return filePath, nil
+
+	// return content
+	return content, nil
+	
 }

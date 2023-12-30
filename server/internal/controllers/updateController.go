@@ -8,7 +8,7 @@ import (
 )
 
 func UpdateHandler(c *gin.Context, config *services.Config) {
-	code, err := parser.ParseRemoteXML(config.XMLRemoteURL)
+	_, err := parser.ParseRemoteXML(config.XMLRemoteURL)
 	if err != nil {
 		c.JSON(http.StatusServiceUnavailable, gin.H{
 			"success": false,
@@ -17,7 +17,9 @@ func UpdateHandler(c *gin.Context, config *services.Config) {
 		})
 	} else {
 		c.JSON(http.StatusOK, gin.H{
-			"code": code,
+			"result": true,
+			"info":   "",
+			"code":   200,
 		})
 	}
 }
