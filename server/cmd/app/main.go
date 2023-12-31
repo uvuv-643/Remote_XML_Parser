@@ -17,7 +17,7 @@ import (
 
 func main() {
 
-	err := godotenv.Load("./server/.env")
+	err := godotenv.Load("./.env")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -41,18 +41,20 @@ func main() {
 	conf.Logger = logger
 	logger.Infof("%+v\n", conf)
 
-	//conf.ConnectDatabase()
-	//
-	//defer func() {
-	//	sqlDB, err := conf.PGClient.DB()
-	//	if err != nil {
-	//		log.Fatalf("Failed to close database connection")
-	//	}
-	//	err = sqlDB.Close()
-	//	if err != nil {
-	//		log.Fatalf("Failed to close database connection")
-	//	}
-	//}()
+	conf.ConnectDatabase()
+
+	defer func() {
+		sqlDB, err := conf.PGClient.DB()
+		if err != nil {
+			log.Fatalf("Failed to close database connection")
+		}
+		err = sqlDB.Close()
+		if err != nil {
+			log.Fatalf("Failed to close database connection")
+		}
+	}()
+
+	conf.ConnectRedis()
 
 	mode := gin.ReleaseMode
 	if conf.Env == "local" {

@@ -10,9 +10,20 @@ services:
     env_file:
       - ./database/.env
     volumes:
-      - 'dbdata:/var/lib/postgresql/data'
+      - dbdata:/var/lib/postgresql/data
     networks:
-      - api
+      - app-network
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./redis/dаta:/usr/local/redis/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    env_file:
+      - ./redis/.env
 
   server:
     build:
@@ -20,8 +31,10 @@ services:
       dockerfile: Dockerfile
     container_name: server
     restart: unless-stopped
+    volumes:
+      - ./server/xml:/xml
     ports:
-      - "8080:8080"
+      - '8080:8080'
     networks:
       - app-network
 

@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"github.com/google/uuid"
 	"io"
+	"log"
 	"net/http"
 	"os"
 )
@@ -16,37 +17,41 @@ func Download(remoteUrl string, prefixPath string, extension string) ([]byte, er
 	fileNameId := uuid.New().String()
 	filePath := prefixPath + fileNameId + "." + extension
 
-	// create new .xml file
+	// create new .xmlmodel file
 	out, err := os.Create(filePath)
 	if err != nil {
+		log.Println(err.Error())
 		return emptyResponse, services.ServerUnavailable
 	}
 	defer func() {
 		out.Close()
 	}()
 
-	// get remote .xml file
+	// get remote .xmlmodel file
 	resp, err := http.Get(remoteUrl)
 	if err != nil {
+		log.Println(err.Error())
 		return emptyResponse, services.ServerUnavailable
 	}
 	defer func(Body io.ReadCloser) {
 		Body.Close()
 	}(resp.Body)
 
-	// read remote .xml file content to memory
+	// read remote .xmlmodel file content to memory
 	content, err := io.ReadAll(resp.Body)
 	if err != nil {
+		log.Println(err.Error())
 		return emptyResponse, services.ServerUnavailable
 	}
 
 	// write from memory to drive
 	_, err = io.Copy(out, bytes.NewBuffer(content))
 	if err != nil {
+		log.Println(err.Error())
 		return emptyResponse, services.ServerUnavailable
 	}
 
 	// return content
 	return content, nil
-	
+
 }

@@ -63,7 +63,7 @@ func getXMLUniqueTags(filePath string) []string {
 }
 
 func PrintTags() {
-	directory := "./server/xml/"
+	directory := "/xml/"
 	randomXMLFile, err := getRandomXMLFile(directory)
 	if err != nil {
 		log.Fatal(err)
