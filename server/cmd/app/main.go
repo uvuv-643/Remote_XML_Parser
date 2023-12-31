@@ -42,6 +42,7 @@ func main() {
 	logger.Infof("%+v\n", conf)
 
 	conf.ConnectDatabase()
+	conf.MigrateDatabase()
 
 	defer func() {
 		sqlDB, err := conf.PGClient.DB()
