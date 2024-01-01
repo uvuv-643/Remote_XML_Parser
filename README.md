@@ -1,5 +1,7 @@
 # Remote XML Parser
 
+[Об оптимизации скорости выполнения запроса ```GET /update```](./redis/README.md)
+
 Доступные XML теги [исходной структуры](https://www.treasury.gov/ofac/downloads/sdn.xm):
 
 * Publish_Date
@@ -54,7 +56,7 @@
 * vesselOwner ```Only for Vessel type```
 * vesselType ```Only for Vessel type```
 
-XML структура имеет следующий вид:
+Общая XML структура имеет следующий вид:
 ```go
 package parser
 import "encoding/xml"

@@ -5,14 +5,16 @@ import (
 	"Remote_XML_Parser/internal/models/global"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"log"
 )
 
 func (config *Config) ConnectDatabase() {
 	databaseClient, err := gorm.Open(postgres.Open(config.DatabaseURL), &gorm.Config{
 		SkipDefaultTransaction: true,
+		Logger:                 logger.Default.LogMode(logger.Silent),
 	})
-	config.PGClient = databaseClient
+	config.DBClient = databaseClient
 	if err != nil {
 		log.Fatal("Error connecting database")
 	}
@@ -20,7 +22,7 @@ func (config *Config) ConnectDatabase() {
 
 func (config *Config) MigrateDatabase() {
 
-	config.PGClient.AutoMigrate(
+	config.DBClient.AutoMigrate(
 		&dbs.SDNAddress{},
 		&dbs.SDNAka{},
 		&dbs.SDNCitizenship{},

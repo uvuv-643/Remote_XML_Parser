@@ -13,7 +13,8 @@ type Config struct {
 	RedisURL      string             `required:"true"`
 	RedisPassword string             `required:"true"`
 	XMLRemoteURL  string             `required:"true"`
+	RedisTTL      int                `required:"true"`
 	Logger        *zap.SugaredLogger `ignored:"true"`
-	PGClient      *gorm.DB           `ignored:"true"`
+	DBClient      *gorm.DB           `ignored:"true"`
 	RedisClient   *redis.Client      `ignored:"true"`
 }

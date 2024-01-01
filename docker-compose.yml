@@ -16,14 +16,20 @@ services:
 
   redis:
     image: redis:latest
-    restart: always
+    restart: unless-stopped
+    container_name: redis
     ports:
       - '6379:6379'
     volumes:
-      - ./redis/dаta:/usr/local/redis/data
+      - redisdata:/usr/local/redis/data
       - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
     env_file:
       - ./redis/.env
+    networks:
+      - app-network
+    command:
+      redis-server /usr/local/etc/redis/redis.conf --requirepass password
+
 
   server:
     build:
@@ -42,7 +48,8 @@ networks:
   app-network:
     driver: bridge
 
-#Volumes
 volumes:
+  redisdata:
+    driver: local
   dbdata:
     driver: local

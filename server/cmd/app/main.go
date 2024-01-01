@@ -45,7 +45,7 @@ func main() {
 	conf.MigrateDatabase()
 
 	defer func() {
-		sqlDB, err := conf.PGClient.DB()
+		sqlDB, err := conf.DBClient.DB()
 		if err != nil {
 			log.Fatalf("Failed to close database connection")
 		}

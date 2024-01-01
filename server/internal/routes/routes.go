@@ -21,6 +21,7 @@ func AddRoutes(r *gin.Engine, config *services.Config) {
 		controllers.UpdateHandler(c, config)
 	})
 	r.GET("/state", func(c *gin.Context) {
+		controllers.GetStatus(c, config)
 	})
 	r.GET("/get_names", func(c *gin.Context) {
 	})
