@@ -1,6 +1,6 @@
 # Remote XML Parser
 
-[Об оптимизации скорости выполнения запроса ```GET /update```](./redis/README.md)
+[Об оптимизации скорости выполнения запроса ```POST /update```](./redis/README.md)
 
 Доступные XML теги [исходной структуры](https://www.treasury.gov/ofac/downloads/sdn.xm):
 
