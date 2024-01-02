@@ -1,62 +1,22 @@
 # Remote XML Parser
 
+Импорт / обновление необходимых данных из https://www.treasury.gov/ofac/downloads/sdn.xml в
+локальную базу PostgreSQL 14. Получение текущего состояния данных.
+Получение списка всех возможных имён человека из локальной базы данных с указанием
+основного uid в виде JSON.
+
 [Об оптимизации скорости выполнения запроса ```POST /update```](./redis/README.md)
 
-Доступные XML теги [исходной структуры](https://www.treasury.gov/ofac/downloads/sdn.xm):
+### Deployment
 
-* Publish_Date
-* Record_Count
-* address
-* address1
-* address2
-* address3
-* addressList
-* aka
-* akaList
-* callSign ```Only for Vessel type``` 
-* category
-* citizenship
-* citizenshipList
-* city
-* country
-* dateOfBirth
-* dateOfBirthItem
-* dateOfBirthList
-* expirationDate
-* firstName
-* grossRegisteredTonnage ```Only for Vessel type```
-* id
-* idCountry
-* idList
-* idNumber
-* idType
-* issueDate
-* lastName
-* mainEntry
-* nationality
-* nationalityList
-* placeOfBirth
-* placeOfBirthItem
-* placeOfBirthList
-* postalCode
-* program
-* programList
-* publishInformation
-* remarks
-* sdnEntry
-* sdnList
-* sdnType
-* stateOrProvince
-* title
-* tonnage ```Only for Vessel type```
-* type
-* uid
-* vesselFlag ```Only for Vessel type```
-* vesselInfo ```Only for Vessel type```
-* vesselOwner ```Only for Vessel type```
-* vesselType ```Only for Vessel type```
+```bash 
+    cp ./database/.env.example ./database/.env
+    cp ./redis/.env.example ./redis/.env
+    cp ./server/.env.example ./server/.env
+    docker compose build && docker compose up -d
+```
 
-Общая XML структура имеет следующий вид:
+### Общая XML структура имеет следующий вид:
 ```go
 package parser
 import "encoding/xml"

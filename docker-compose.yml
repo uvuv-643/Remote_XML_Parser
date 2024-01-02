@@ -28,7 +28,7 @@ services:
     networks:
       - app-network
     command:
-      redis-server /usr/local/etc/redis/redis.conf --requirepass password
+      redis-server /usr/local/etc/redis/redis.conf --requirepass password --save "" --appendonly no
 
 
   server:
