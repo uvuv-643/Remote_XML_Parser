@@ -4,6 +4,7 @@ import (
 	"Remote_XML_Parser/internal/controllers"
 	"Remote_XML_Parser/internal/services"
 	"Remote_XML_Parser/xml"
+	"fmt"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,7 +19,16 @@ func SetupDefaultEndpoints(r *gin.Engine, conf *services.Config) {
 
 func AddRoutes(r *gin.Engine, config *services.Config) {
 	r.POST("/update", func(c *gin.Context) {
-		controllers.UpdateHandler(c, config)
+		signal := make(chan struct{}, 1)
+		controllers.UpdateHandler(c, config, signal)
+		select {
+		case <-signal:
+			fmt.Println("Request SIGEND")
+			close(signal)
+		case <-c.Request.Context().Done():
+			config.RedisClient.FlushAll()
+			return
+		}
 	})
 	r.GET("/state", func(c *gin.Context) {
 		controllers.GetStatus(c, config)

@@ -10,7 +10,7 @@ import (
 func GetStatus(c *gin.Context, config *services.Config) {
 	status := global.Empty
 	var lastStatus global.UpdateStatus
-	if err := config.DBClient.Order("created_at desc").Limit(1).Find(&lastStatus).Error; err == nil {
+	if err := config.DBClient.Order("created_at desc").Limit(1).Find(&lastStatus).Error; err == nil && lastStatus.Status != "" {
 		status = lastStatus.Status
 	}
 	result := false

@@ -85,6 +85,7 @@ type SDN struct {
 				UID      string   `xmlmodel:"uid"`
 				Type     string   `xmlmodel:"type"`
 				Category string   `xmlmodel:"category"`
+				FirstName xml.Name `xmlmodel:"firstName"`
 				LastName xml.Name `xmlmodel:"lastName"`
 			} `xmlmodel:"aka"`
 		} `xmlmodel:"akaList"`

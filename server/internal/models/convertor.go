@@ -128,10 +128,11 @@ func ConvertXmlToDb(value interface{}) interface{} {
 	if reflect.TypeOf(value).String() == XMLS_PREFIX+".SDNAka" {
 		aka := value.(xmls.SDNAka)
 		return &dbs.SDNAka{
-			UID:      aka.UID,
-			Type:     aka.Type,
-			Category: aka.Category,
-			LastName: aka.LastName,
+			UID:       aka.UID,
+			Type:      aka.Type,
+			Category:  aka.Category,
+			FirstName: aka.FirstName,
+			LastName:  aka.LastName,
 		}
 	}
 	if reflect.TypeOf(value).String() == XMLS_PREFIX+".SDNId" {
